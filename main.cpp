@@ -34,24 +34,22 @@ int main() {
     int xeIndex = 0;
     int yeIndex = 0;
     std::vector<sf::RectangleShape> bullets;
-    // sf::Vector2f bulletDirection;
     float bulletSpeed = 0.2f;
-    // sf::RectangleShape bullet(sf::Vector2f(10, 5));
     // -------------------- Variables --------------------
 
     // ?------------------- Configs ----------------------
     // movement structure to store speed and sprite index
-    // struct Movement {
-    //     sf::Vector2f vector;
-    //     int yIndex;
-    // };
+    struct Movement {
+        sf::Vector2f vector;
+        int yIndex;
+    };
     // map to store the movement related data of the player
-    // std::map<sf::Keyboard::Key, Movement> movementMap = {
-    //     {sf::Keyboard::W, {sf::Vector2f(0, -1),0}}, // up
-    //     {sf::Keyboard::A, {sf::Vector2f(-1, 0),1}}, // left
-    //     {sf::Keyboard::S, {sf::Vector2f(0, 1),2}}, // down
-    //     {sf::Keyboard::D, {sf::Vector2f(1, 0),3}} // right
-    // };
+    std::map<sf::Keyboard::Key, Movement> movementMap = {
+        {sf::Keyboard::W, {sf::Vector2f(0, -1),0}}, // up
+        {sf::Keyboard::A, {sf::Vector2f(-1, 0),1}}, // left
+        {sf::Keyboard::S, {sf::Vector2f(0, 1),2}}, // down
+        {sf::Keyboard::D, {sf::Vector2f(1, 0),3}} // right
+    };
     // ?-------------------- Configs ----------------------
 
     // ------------------- Load Assets --------------------
@@ -106,30 +104,29 @@ int main() {
             }
         }
         // movement of player
-        // for (const auto& [key, movement] : movementMap) {
-        //     if (sf::Keyboard::isKeyPressed(key)) {
-        //         sf::Vector2f position = playerSprite.getPosition();
-        //         playerSprite.setPosition(position + movement.vector);
-        //         yIndex = movement.yIndex;
-        //     }
-        // }
+        for (const auto& [key, movement] : movementMap) {
+            if (sf::Keyboard::isKeyPressed(key)) {
+                sf::Vector2f position = playerSprite.getPosition();
+                playerSprite.setPosition(position + movement.vector);
+                yIndex = movement.yIndex;
+            }
+        }
 
-        sf::Vector2f position = playerSprite.getPosition();
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-            playerSprite.setPosition(position + sf::Vector2f(0, -1));
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            playerSprite.setPosition(position + sf::Vector2f(-1, 0));
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-            playerSprite.setPosition(position + sf::Vector2f(0, 1));
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-            playerSprite.setPosition(position + sf::Vector2f(1, 0));
+        // sf::Vector2f position = playerSprite.getPosition();
+        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        //     playerSprite.setPosition(position + sf::Vector2f(0, -1));
+        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        //     playerSprite.setPosition(position + sf::Vector2f(-1, 0));
+        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        //     playerSprite.setPosition(position + sf::Vector2f(0, 1));
+        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        //     playerSprite.setPosition(position + sf::Vector2f(1, 0));
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
             bullets.push_back(sf::RectangleShape(sf::Vector2f(20, 20)));
 
             int i = bullets.size() - 1;
             bullets[i].setPosition(playerSprite.getPosition());
-
         }
 
         for (size_t i = 0;i < bullets.size();i++) {
