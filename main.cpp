@@ -50,6 +50,12 @@ int main() {
         {sf::Keyboard::S, {sf::Vector2f(0, 1),2}}, // down
         {sf::Keyboard::D, {sf::Vector2f(1, 0),3}} // right
     };
+    std::map<sf::Keyboard::Key, Movement> movementMap2 = {
+        {sf::Keyboard::I, {sf::Vector2f(0, -1),0}}, // up
+        {sf::Keyboard::J, {sf::Vector2f(-1, 0),1}}, // left
+        {sf::Keyboard::K, {sf::Vector2f(0, 1),2}}, // down
+        {sf::Keyboard::L, {sf::Vector2f(1, 0),3}} // right
+    };
     // ?-------------------- Configs ----------------------
 
     // ------------------- Load Assets --------------------
@@ -83,20 +89,13 @@ int main() {
         log << "Error loading player texture" << endl;
     }
     // ?--------------------- Player ----------------------
-    // setting bullet position to player position
-    // bullet.setPosition(playerSprite.getPosition());
     // ------------------- Load Assets --------------------
-
-    // calculate bullet direction
-    // sf::Vector2f bulletDirection = skeletonSprite.getPosition() - playerSprite.getPosition();
-    // bulletDirection = normalizeVector(bulletDirection);
-    // calculate bullet direction
 
     //main loop
     while (window.isOpen()) {
 
         // ?--------------- Update ------------------
-        //checks for events every frame
+        //close code
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
@@ -111,38 +110,32 @@ int main() {
                 yIndex = movement.yIndex;
             }
         }
-
-        // sf::Vector2f position = playerSprite.getPosition();
-        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        //     playerSprite.setPosition(position + sf::Vector2f(0, -1));
-        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        //     playerSprite.setPosition(position + sf::Vector2f(-1, 0));
-        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        //     playerSprite.setPosition(position + sf::Vector2f(0, 1));
-        // if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        //     playerSprite.setPosition(position + sf::Vector2f(1, 0));
-
+        // movement of skeleton
+        for (const auto& [key, movement] : movementMap2) {
+            if (sf::Keyboard::isKeyPressed(key)) {
+                sf::Vector2f position = skeletonSprite.getPosition();
+                skeletonSprite.setPosition(position + movement.vector);
+                yeIndex = movement.yIndex;
+            }
+        }
+        // bullet on mouse click
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
             bullets.push_back(sf::RectangleShape(sf::Vector2f(20, 20)));
-
             int i = bullets.size() - 1;
             bullets[i].setPosition(playerSprite.getPosition());
         }
-
         for (size_t i = 0;i < bullets.size();i++) {
             sf::Vector2f bulletDirection = skeletonSprite.getPosition() - bullets[i].getPosition();
             bulletDirection = normalizeVector(bulletDirection);
             bullets[i].setPosition(bullets[i].getPosition() + bulletDirection * bulletSpeed);
         }
-
-        // movement of player
-        // bullet.setPosition(bullet.getPosition() + bulletDirection * bulletSpeed);
         // ?--------------- Update ------------------
 
         // ----------------- Draw -------------------
         window.clear(sf::Color::Black); // clear the previous frame
 
         playerSprite.setTextureRect(sf::IntRect(64 * xIndex, 64 * yIndex, 64, 64));
+        skeletonSprite.setTextureRect(sf::IntRect(64 * xeIndex, 64 * yeIndex, 64, 64));
         window.draw(skeletonSprite);
         window.draw(playerSprite);
 
