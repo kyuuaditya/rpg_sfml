@@ -33,23 +33,25 @@ int main() {
     int yIndex = 0;
     int xeIndex = 0;
     int yeIndex = 0;
-    sf::RectangleShape bullet(sf::Vector2f(10, 5));
+    std::vector<sf::RectangleShape> bullets;
+    // sf::Vector2f bulletDirection;
     float bulletSpeed = 0.2f;
+    // sf::RectangleShape bullet(sf::Vector2f(10, 5));
     // -------------------- Variables --------------------
 
     // ?------------------- Configs ----------------------
     // movement structure to store speed and sprite index
-    struct Movement {
-        sf::Vector2f vector;
-        int yIndex;
-    };
+    // struct Movement {
+    //     sf::Vector2f vector;
+    //     int yIndex;
+    // };
     // map to store the movement related data of the player
-    std::map<sf::Keyboard::Key, Movement> movementMap = {
-        {sf::Keyboard::W, {sf::Vector2f(0, -1),0}}, // up
-        {sf::Keyboard::A, {sf::Vector2f(-1, 0),1}}, // left
-        {sf::Keyboard::S, {sf::Vector2f(0, 1),2}}, // down
-        {sf::Keyboard::D, {sf::Vector2f(1, 0),3}} // right
-    };
+    // std::map<sf::Keyboard::Key, Movement> movementMap = {
+    //     {sf::Keyboard::W, {sf::Vector2f(0, -1),0}}, // up
+    //     {sf::Keyboard::A, {sf::Vector2f(-1, 0),1}}, // left
+    //     {sf::Keyboard::S, {sf::Vector2f(0, 1),2}}, // down
+    //     {sf::Keyboard::D, {sf::Vector2f(1, 0),3}} // right
+    // };
     // ?-------------------- Configs ----------------------
 
     // ------------------- Load Assets --------------------
@@ -84,12 +86,12 @@ int main() {
     }
     // ?--------------------- Player ----------------------
     // setting bullet position to player position
-    bullet.setPosition(playerSprite.getPosition());
+    // bullet.setPosition(playerSprite.getPosition());
     // ------------------- Load Assets --------------------
 
     // calculate bullet direction
-    sf::Vector2f bulletDirection = skeletonSprite.getPosition() - playerSprite.getPosition();
-    bulletDirection = normalizeVector(bulletDirection);
+    // sf::Vector2f bulletDirection = skeletonSprite.getPosition() - playerSprite.getPosition();
+    // bulletDirection = normalizeVector(bulletDirection);
     // calculate bullet direction
 
     //main loop
@@ -104,24 +106,53 @@ int main() {
             }
         }
         // movement of player
-        for (const auto& [key, movement] : movementMap) {
-            if (sf::Keyboard::isKeyPressed(key)) {
-                sf::Vector2f position = playerSprite.getPosition();
-                playerSprite.setPosition(position + movement.vector);
-                yIndex = movement.yIndex;
-            }
+        // for (const auto& [key, movement] : movementMap) {
+        //     if (sf::Keyboard::isKeyPressed(key)) {
+        //         sf::Vector2f position = playerSprite.getPosition();
+        //         playerSprite.setPosition(position + movement.vector);
+        //         yIndex = movement.yIndex;
+        //     }
+        // }
+
+        sf::Vector2f position = playerSprite.getPosition();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+            playerSprite.setPosition(position + sf::Vector2f(0, -1));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+            playerSprite.setPosition(position + sf::Vector2f(-1, 0));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+            playerSprite.setPosition(position + sf::Vector2f(0, 1));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+            playerSprite.setPosition(position + sf::Vector2f(1, 0));
+
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+            bullets.push_back(sf::RectangleShape(sf::Vector2f(20, 20)));
+
+            int i = bullets.size() - 1;
+            bullets[i].setPosition(playerSprite.getPosition());
+
         }
+
+        for (size_t i = 0;i < bullets.size();i++) {
+            sf::Vector2f bulletDirection = skeletonSprite.getPosition() - bullets[i].getPosition();
+            bulletDirection = normalizeVector(bulletDirection);
+            bullets[i].setPosition(bullets[i].getPosition() + bulletDirection * bulletSpeed);
+        }
+
         // movement of player
-        bullet.setPosition(bullet.getPosition() + bulletDirection * bulletSpeed);
+        // bullet.setPosition(bullet.getPosition() + bulletDirection * bulletSpeed);
         // ?--------------- Update ------------------
 
         // ----------------- Draw -------------------
         window.clear(sf::Color::Black); // clear the previous frame
-        // drawing everything
+
         playerSprite.setTextureRect(sf::IntRect(64 * xIndex, 64 * yIndex, 64, 64));
         window.draw(skeletonSprite);
         window.draw(playerSprite);
-        window.draw(bullet);
+
+        // window.draw(bullet);
+        for (size_t i = 0;i < bullets.size();i++) {
+            window.draw(bullets[i]);
+        }
         window.display(); // display the current frame
         // ----------------- Draw -------------------
     }
