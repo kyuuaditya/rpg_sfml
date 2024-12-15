@@ -9,6 +9,6 @@ sf::Vector2f Math::NormalizeVector(sf::Vector2f vector)
 
 	normalizedVector.x = vector.x / m;
 	normalizedVector.y = vector.y / m;
-
+	
 	return normalizedVector;
 } 

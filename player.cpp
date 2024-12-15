@@ -3,6 +3,12 @@
 #include "Math.h"
 
 void Player::Initialize() {
+    movementMap = {
+        {sf::Keyboard::W, {sf::Vector2f(0, -1),0}}, // up
+        {sf::Keyboard::A, {sf::Vector2f(-1, 0),1}}, // left
+        {sf::Keyboard::S, {sf::Vector2f(0, 1),2}}, // down
+        {sf::Keyboard::D, {sf::Vector2f(1, 0),3}} // right
+    };
 }
 
 void Player::Load() {
@@ -23,19 +29,14 @@ void Player::Load() {
 }
 
 void Player::Update(Skeleton& skeleton) {
-    sf::Vector2f position = sprite.getPosition();
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        sprite.setPosition(position + sf::Vector2f(1, 0));
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        sprite.setPosition(position + sf::Vector2f(-1, 0));
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        sprite.setPosition(position + sf::Vector2f(0, -1));
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        sprite.setPosition(position + sf::Vector2f(0, 1));
+    for (const auto& [key, movement] : movementMap) {
+        if (sf::Keyboard::isKeyPressed(key)) {
+            sf::Vector2f position = sprite.getPosition();
+            sprite.setPosition(position + movement.vector);
+            yIndex = movement.yIndex;
+            sprite.setTextureRect(sf::IntRect(64 * xIndex, 64 * yIndex, 64, 64));
+        }
+    }
 
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
@@ -59,49 +60,3 @@ void Player::Draw(sf::RenderWindow& window) {
         window.draw(bullets[i]);
     }
 }
-
-// #include "player.h"
-// #include <iostream>
-
-
-
-// void Player::Initialize() {
-//     movementMap = {
-//         {sf::Keyboard::W, {sf::Vector2f(0, -1),0}}, // up
-//         {sf::Keyboard::A, {sf::Vector2f(-1, 0),1}}, // left
-//         {sf::Keyboard::S, {sf::Vector2f(0, 1),2}}, // down
-//         {sf::Keyboard::D, {sf::Vector2f(1, 0),3}} // right
-//     };
-// }
-
-// void Player::Load() {
-//     if (texture.loadFromFile("assets/player/texture/spriteSheet.png")) {
-//         sprite.setTexture(texture);
-//         sprite.setTextureRect(sf::IntRect(64 * xIndex, 64 * yIndex, 64, 64));
-//         sprite.scale(sf::Vector2f(2, 2));
-//         sprite.setPosition(sf::Vector2f(200, 300));
-//         std::cout << "player texure loaded" << std::endl;
-//     }
-//     else {
-//         std::cout << "Error loading player texture" << std::endl;
-//     }
-// }
-
-// void Player::Update() {
-//     for (const auto& [key, movement] : movementMap) {
-//         if (sf::Keyboard::isKeyPressed(key)) {
-//             sf::Vector2f position = sprite.getPosition();
-//             sprite.setPosition(position + movement.vector);
-//             yIndex = movement.yIndex;
-//         }
-//     }
-// }
-
-// void Player::Draw() {
-//     sprite.setTextureRect(sf::IntRect(64 * xIndex, 64 * yIndex, 64, 64));
-//     // std::cout << "b";
-// }
-
-// sf::Sprite& Player::getSprite() {
-//     return sprite;
-// }
