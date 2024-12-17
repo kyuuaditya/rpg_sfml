@@ -8,10 +8,11 @@
 int main() {
     //-------------------------------- INITIALIZE --------------------------------
     sf::ContextSettings settings;
-    settings.antialiasingLevel = 8;
-    sf::RenderWindow window(sf::VideoMode(1280, 720), "RPG Game", sf::Style::Default, settings);
+    settings.antialiasingLevel = 8; // set antialiasing level
+    sf::RenderWindow window(sf::VideoMode(1280, 720), "RPG Game", sf::Style::Default, settings); // set screen resolution
     //-------------------------------- INITIALIZE --------------------------------
 
+    // define classes
     Player player;
     Skeleton skeleton;
 
@@ -32,7 +33,6 @@ int main() {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-
         skeleton.Update();
         player.Update(skeleton);
         //-------------------------------- UPDATE --------------------------------
