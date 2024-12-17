@@ -8,10 +8,11 @@ void Skeleton::Initialize() {
         {sf::Keyboard::K, {sf::Vector2f(0, 1),2}}, // down
         {sf::Keyboard::L, {sf::Vector2f(1, 0),3}} // right
     };
-    // set the scale size.
-    size = sf::Vector2i(64, 64);
-    sprite.scale(sf::Vector2f(3, 3));
 
+    size = sf::Vector2i(64, 64); // size of skeleton sprite
+    sprite.scale(sf::Vector2f(3, 3)); // scale 
+
+    // bounding rectangle properties
     boundingRectangle.setFillColor(sf::Color::Transparent);
     boundingRectangle.setOutlineColor(sf::Color::Cyan);
     boundingRectangle.setOutlineThickness(1);
@@ -21,12 +22,12 @@ void Skeleton::Initialize() {
 void Skeleton::Load() {
     if (texture.loadFromFile("assets/skeleton/texture/spriteSheet.png")) {
         std::cout << "Skeleton texture loaded!" << std::endl;
-        sprite.setTexture(texture);
-        sprite.setPosition(sf::Vector2f(300, 200));
 
         int xIndex = 0;
         int yIndex = 0;
 
+        sprite.setTexture(texture);
+        sprite.setPosition(sf::Vector2f(300, 200));
         sprite.setTextureRect(sf::IntRect(xIndex * size.x, yIndex * size.y, size.x, size.y));
     }
     else {
@@ -38,15 +39,17 @@ void Skeleton::Update() {
     for (const auto& [key, movement] : movementMap) {
         if (sf::Keyboard::isKeyPressed(key)) {
             sf::Vector2f position = sprite.getPosition();
-            sprite.setPosition(position + movement.vector);
+
             yIndex = movement.yIndex;
+            sprite.setPosition(position + movement.vector);
             sprite.setTextureRect(sf::IntRect(xIndex * size.x, yIndex * size.y, size.x, size.y));
         }
     }
+
     boundingRectangle.setPosition(sprite.getPosition());
 }
 
 void Skeleton::Draw(sf::RenderWindow& window) {
-    window.draw(boundingRectangle);
     window.draw(sprite);
+    window.draw(boundingRectangle);
 }

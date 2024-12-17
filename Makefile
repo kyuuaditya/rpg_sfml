@@ -2,8 +2,8 @@ all: compile link run
 
 compile:
 	g++ -I"C:\SFML-2.6.2\include" -c math.cpp -o math.o
-	g++ -I"C:\SFML-2.6.2\include" -c player.cpp -o player.o
 	g++ -I"C:\SFML-2.6.2\include" -c skeleton.cpp -o skeleton.o
+	g++ -I"C:\SFML-2.6.2\include" -c player.cpp -o player.o
 	g++ -I"C:\SFML-2.6.2\include" -c main.cpp -o app.o
 
 link: 
