@@ -10,6 +10,7 @@ private:
     };
     std::map<sf::Keyboard::Key, Movement> movementMap;
 
+    float skeletonSpeed = 2.0f;
     float width = 64;
     float height = 64;
     sf::Vector2i size;
@@ -23,6 +24,6 @@ public:
 public:
     void Initialize();
     void Load();
-    void Update();
+    void Update(float deltaTime);
     void Draw(sf::RenderWindow& window);
 };

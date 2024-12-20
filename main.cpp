@@ -1,7 +1,7 @@
 // to run and compiler
 // mingw32-make
 #include <SFML/Graphics.hpp>
-
+#include <iostream>
 #include "Player.h"
 #include "Skeleton.h"
 
@@ -10,7 +10,8 @@ int main() {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8; // set antialiasing level
     sf::RenderWindow window(sf::VideoMode(1280, 720), "RPG Game", sf::Style::Default, settings); // set screen resolution
-
+    window.setFramerateLimit(144); // set frame limit
+    
     Player player;
     Skeleton skeleton;
 
@@ -22,8 +23,13 @@ int main() {
     player.Load();
     skeleton.Load();
     //-------------------------------- LOAD --------------------------------
+    
+    sf::Clock clock;
 
     while (window.isOpen()) {
+        sf::Time deltaTimeTimer =  clock.restart();
+        float deltaTime = deltaTimeTimer.asMilliseconds();
+        
         //-------------------------------- UPDATE --------------------------------
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -31,8 +37,8 @@ int main() {
                 window.close();
         }
 
-        skeleton.Update();
-        player.Update(skeleton);
+        skeleton.Update(deltaTime);
+        player.Update(deltaTime, skeleton);
         //-------------------------------- UPDATE --------------------------------
 
         //-------------------------------- DRAW --------------------------------
@@ -44,6 +50,5 @@ int main() {
         window.display();
         //-------------------------------- DRAW --------------------------------
     }
-
     return 0;
 }

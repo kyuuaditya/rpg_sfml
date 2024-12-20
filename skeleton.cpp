@@ -35,13 +35,13 @@ void Skeleton::Load() {
     }
 }
 
-void Skeleton::Update() {
+void Skeleton::Update(float deltaTime) {
     for (const auto& [key, movement] : movementMap) {
         if (sf::Keyboard::isKeyPressed(key)) {
             sf::Vector2f position = sprite.getPosition();
 
             yIndex = movement.yIndex;
-            sprite.setPosition(position + movement.vector);
+            sprite.setPosition(position + movement.vector* skeletonSpeed * deltaTime);
             sprite.setTextureRect(sf::IntRect(xIndex * size.x, yIndex * size.y, size.x, size.y));
         }
     }

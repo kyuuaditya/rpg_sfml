@@ -16,6 +16,7 @@ private:
     sf::Vector2i size;
 
     float bulletSpeed = 0.5f;
+    float playerSpeed = 2.0f;
     sf::RectangleShape boundingRectangle;
     std::vector<sf::RectangleShape> bullets;
 
@@ -28,6 +29,6 @@ public:
 public:
     void Initialize();
     void Load();
-    void Update(Skeleton& skeleton);
+    void Update(float deltaTime, Skeleton& skeleton);
     void Draw(sf::RenderWindow& window);
 };

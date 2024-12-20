@@ -36,13 +36,13 @@ void Player::Load() {
     }
 }
 
-void Player::Update(Skeleton& skeleton) {
+void Player::Update(float deltaTime, Skeleton& skeleton) {
     for (const auto& [key, movement] : movementMap) {
         if (sf::Keyboard::isKeyPressed(key)) {
             sf::Vector2f position = sprite.getPosition();
 
             yIndex = movement.yIndex;
-            sprite.setPosition(position + movement.vector);
+            sprite.setPosition(position + movement.vector * playerSpeed * deltaTime);
             sprite.setTextureRect(sf::IntRect(xIndex * size.x, yIndex * size.y, size.x, size.y));
         }
     }
@@ -60,7 +60,7 @@ void Player::Update(Skeleton& skeleton) {
         sf::Vector2f bulletDirection = skeleton.sprite.getPosition() - bullets[i].getPosition();
 
         bulletDirection = Math::NormalizeVector(bulletDirection);
-        bullets[i].setPosition(bullets[i].getPosition() + bulletDirection * bulletSpeed);
+        bullets[i].setPosition(bullets[i].getPosition() + bulletDirection * bulletSpeed * deltaTime);
     }
 
     if (Math::DidRectCollide(sprite.getGlobalBounds(), skeleton.sprite.getGlobalBounds())) { // change colors on collision
