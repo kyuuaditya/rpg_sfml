@@ -4,31 +4,33 @@
 #include <iostream>
 #include "Player.h"
 #include "Skeleton.h"
+#include "Stats.h"
 
 int main() {
     //-------------------------------- INITIALIZE --------------------------------
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8; // set antialiasing level
     sf::RenderWindow window(sf::VideoMode(1280, 720), "RPG Game", sf::Style::Default, settings); // set screen resolution
-    window.setFramerateLimit(144); // set frame limit
+    // window.setFramerateLimit(144); // set frame limit
     
     Player player;
     Skeleton skeleton;
+    Stats stats;
 
     player.Initialize();
     skeleton.Initialize();
+    stats.Initialize();
+    
     //-------------------------------- INITIALIZE --------------------------------
 
     //-------------------------------- LOAD --------------------------------
     player.Load();
     skeleton.Load();
-    //-------------------------------- LOAD --------------------------------
+    stats.Load();
     
-    sf::Clock clock;
+    //-------------------------------- LOAD --------------------------------
 
     while (window.isOpen()) {
-        sf::Time deltaTimeTimer =  clock.restart();
-        float deltaTime = deltaTimeTimer.asMilliseconds();
         
         //-------------------------------- UPDATE --------------------------------
         sf::Event event;
@@ -37,8 +39,9 @@ int main() {
                 window.close();
         }
 
-        skeleton.Update(deltaTime);
-        player.Update(deltaTime, skeleton);
+        stats.Update();
+        skeleton.Update(stats.deltaTime);
+        player.Update(stats.deltaTime, skeleton);
         //-------------------------------- UPDATE --------------------------------
 
         //-------------------------------- DRAW --------------------------------
@@ -46,6 +49,7 @@ int main() {
 
         skeleton.Draw(window);
         player.Draw(window);
+        stats.Draw(window);
 
         window.display();
         //-------------------------------- DRAW --------------------------------
