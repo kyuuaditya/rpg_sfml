@@ -6,10 +6,12 @@ class Stats{
     sf::Text frameRate;
     sf::Font font;
     sf::Clock clock;
-    sf::Clock clock2;
-    float deltaTimeSmooth = 0;
+    
+    float deltaTimeGap =0;
     int nFrames= 0;
-    // float frameRateSmooth = 0;
+    int updateTime = 500;
+    int x = 10;
+    int y = 10;
 
     public:
     float deltaTime = 0;
