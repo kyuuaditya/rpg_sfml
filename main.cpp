@@ -10,24 +10,25 @@ int main() {
     //-------------------------------- INITIALIZE --------------------------------
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8; // set antialiasing level
-    sf::RenderWindow window(sf::VideoMode(1280, 720), "RPG Game", sf::Style::Default, settings); // set screen resolution
+    sf::RenderWindow window(sf::VideoMode(1280, 720), "RPG Game", sf::Style::Default, settings);
     // window.setFramerateLimit(144); // set frame limit
-    
+
     Player player;
     Skeleton skeleton;
     Stats stats;
+    Bullet bullet;
 
     player.Initialize();
     skeleton.Initialize();
     stats.Initialize();
-    
+
     //-------------------------------- INITIALIZE --------------------------------
 
     //-------------------------------- LOAD --------------------------------
     player.Load();
     skeleton.Load();
     stats.Load();
-    
+
     //-------------------------------- LOAD --------------------------------
 
     while (window.isOpen()) {
@@ -38,9 +39,11 @@ int main() {
                 window.close();
         }
 
+        sf::Vector2f mousePosition = sf::Vector2f(sf::Mouse::getPosition(window));
+
         stats.Update();
         skeleton.Update(stats.deltaTime);
-        player.Update(stats.deltaTime, skeleton);
+        player.Update(stats.deltaTime, skeleton, mousePosition);
         //-------------------------------- UPDATE --------------------------------
 
         //-------------------------------- DRAW --------------------------------

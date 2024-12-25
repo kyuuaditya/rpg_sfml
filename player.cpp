@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Math.h"
 
+
 void Player::Initialize() {
     movementMap = {
         {sf::Keyboard::W, {sf::Vector2f(0, -1),0}}, // up
@@ -36,7 +37,7 @@ void Player::Load() {
     }
 }
 
-void Player::Update(float deltaTime, Skeleton& skeleton) {
+void Player::Update(float deltaTime, Skeleton& skeleton, sf::Vector2f& mousePosition) {
     for (const auto& [key, movement] : movementMap) {
         if (sf::Keyboard::isKeyPressed(key)) {
             sf::Vector2f position = sprite.getPosition();
@@ -49,18 +50,33 @@ void Player::Update(float deltaTime, Skeleton& skeleton) {
 
     boundingRectangle.setPosition(sprite.getPosition());
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) { // ckeck bullet shooting
-        bullets.push_back(sf::RectangleShape(sf::Vector2f(50, 25)));
+    fireRateTimer += deltaTime; // update fire rate timer
 
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && fireRateTimer >= maxFireRate) { // ckeck bullet shooting
+        // bullets.push_back(sf::RectangleShape(sf::Vector2f(50, 25)));
+        bullets.push_back(Bullet());
         int i = bullets.size() - 1;
-        bullets[i].setPosition(sprite.getPosition());
+        bullets[i].Initialize(sprite.getPosition(), mousePosition, 0.5f);
+
+        // bullets[i].setPosition(sprite.getPosition());
+
+        fireRateTimer = 0;
     }
 
     for (size_t i = 0; i < bullets.size(); i++) { // update bullet positions
-        sf::Vector2f bulletDirection = skeleton.sprite.getPosition() - bullets[i].getPosition();
+        // sf::Vector2f bulletDirection = mousePosition - bullets[i].getPosition();
 
-        bulletDirection = Math::NormalizeVector(bulletDirection);
-        bullets[i].setPosition(bullets[i].getPosition() + bulletDirection * bulletSpeed * deltaTime);
+        // bulletDirection = Math::NormalizeVector(bulletDirection);
+        // bullets[i].setPosition(bullets[i].getPosition() + bulletDirection * bulletSpeed * deltaTime);
+
+        bullets[i].Update(deltaTime);
+
+        if (Math::DidRectCollide(bullets[i].GetGlobalBounds(), skeleton.sprite.getGlobalBounds())) {
+            bullets.erase(bullets.begin() + i);
+            skeleton.health -= 5;
+            // std::cout << "Skeleton Health: " << skeleton.health << std::endl;
+            skeleton.stats.setString("Health: " + std::to_string(skeleton.health));
+        };
     }
 
     if (Math::DidRectCollide(sprite.getGlobalBounds(), skeleton.sprite.getGlobalBounds())) { // change colors on collision
@@ -78,6 +94,7 @@ void Player::Draw(sf::RenderWindow& window) {
     window.draw(boundingRectangle);
 
     for (size_t i = 0; i < bullets.size(); i++) { // draw bullets
-        window.draw(bullets[i]);
+        // window.draw(bullets[i]);
+        bullets[i].Draw(window);
     }
 }

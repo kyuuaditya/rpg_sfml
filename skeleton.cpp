@@ -33,23 +33,39 @@ void Skeleton::Load() {
     else {
         std::cout << "Skeleton texture failed to loaded!" << std::endl;
     }
+
+    if (font.loadFromFile("assets/fonts/Alef-Regular.ttf")) {
+        std::cout << "font loaded" << std::endl;
+        stats.setFont(font);
+    }
+    else {
+        std::cout << "font not loaded" << std::endl;
+    }
+
+    stats.setString("Health: " + std::to_string(health));
+    stats.setPosition(sprite.getPosition() - sf::Vector2f(0, 40));
 }
 
 void Skeleton::Update(float deltaTime) {
-    for (const auto& [key, movement] : movementMap) {
-        if (sf::Keyboard::isKeyPressed(key)) {
-            sf::Vector2f position = sprite.getPosition();
+    if (health >= 0) {
+        for (const auto& [key, movement] : movementMap) {
+            if (sf::Keyboard::isKeyPressed(key)) {
+                sf::Vector2f position = sprite.getPosition();
 
-            yIndex = movement.yIndex;
-            sprite.setPosition(position + movement.vector* skeletonSpeed * deltaTime);
-            sprite.setTextureRect(sf::IntRect(xIndex * size.x, yIndex * size.y, size.x, size.y));
+                yIndex = movement.yIndex;
+                sprite.setPosition(position + movement.vector * skeletonSpeed * deltaTime);
+                sprite.setTextureRect(sf::IntRect(xIndex * size.x, yIndex * size.y, size.x, size.y));
+                stats.setPosition(sprite.getPosition() - sf::Vector2f(0, 40));
+            }
         }
+        boundingRectangle.setPosition(sprite.getPosition());
     }
-
-    boundingRectangle.setPosition(sprite.getPosition());
 }
 
 void Skeleton::Draw(sf::RenderWindow& window) {
-    window.draw(sprite);
-    window.draw(boundingRectangle);
+    if (health >= 0) {
+        window.draw(sprite);
+        window.draw(boundingRectangle);
+        window.draw(stats);
+    }
 }

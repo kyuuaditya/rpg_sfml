@@ -3,6 +3,7 @@
 
 class Skeleton {
 private:
+    sf::Font font;
     sf::Texture texture;
     struct Movement {
         sf::Vector2f vector;
@@ -18,8 +19,10 @@ private:
 public:
     int xIndex;
     int yIndex;
+    int health = 100;
     sf::Sprite sprite;
     sf::RectangleShape boundingRectangle;
+    sf::Text stats;
 
 public:
     void Initialize();

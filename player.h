@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Skeleton.h"
+#include "bullet.h"
 
 class Player {
 private:
@@ -15,10 +16,11 @@ private:
     float height = 64;
     sf::Vector2i size;
 
-    float bulletSpeed = 0.5f;
     float playerSpeed = 2.0f;
+    float maxFireRate = 250.0f;
+    float fireRateTimer = 0;
     sf::RectangleShape boundingRectangle;
-    std::vector<sf::RectangleShape> bullets;
+    std::vector<Bullet> bullets;
 
 
 public:
@@ -29,6 +31,6 @@ public:
 public:
     void Initialize();
     void Load();
-    void Update(float deltaTime, Skeleton& skeleton);
+    void Update(float deltaTime, Skeleton& skeleton, sf::Vector2f& mousePosition);
     void Draw(sf::RenderWindow& window);
 };
