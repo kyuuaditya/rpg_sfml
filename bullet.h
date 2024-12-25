@@ -3,7 +3,7 @@
 
 class Bullet {
 public:
-    float speed = 0.5f;
+    float speed = 1.0f; // bullet speed
     sf::Vector2f direction = sf::Vector2f(0, 0);
 
 private:
@@ -12,7 +12,6 @@ private:
 
 public:
     void Initialize(const sf::Vector2f& position, sf::Vector2f& direction, float speed);
-    void Load();
     void Update(float deltaTime);
     void Draw(sf::RenderWindow& window);
 

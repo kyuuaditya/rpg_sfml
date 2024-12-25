@@ -17,8 +17,8 @@ private:
     sf::Vector2i size;
 
 public:
-    int xIndex;
-    int yIndex;
+    int xIndex = 0;
+    int yIndex = 0;
     int health = 100;
     sf::Sprite sprite;
     sf::RectangleShape boundingRectangle;
