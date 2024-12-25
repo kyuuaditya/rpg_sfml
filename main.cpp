@@ -10,13 +10,31 @@ int main() {
     //-------------------------------- INITIALIZE --------------------------------
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8; // set antialiasing level
-    sf::RenderWindow window(sf::VideoMode(1280, 720), "RPG Game", sf::Style::Default, settings);
-    // window.setFramerateLimit(144); // set frame limit
+
+    std::cout << "0: Windowed" << std::endl << "1: Fullscreen" << std::endl;
+    int input_mode = 0;// default windowed mode
+    std::cin >> input_mode;
+
+    int width = 1280; // default windowed mode 720p
+    int height = 720;
+    sf::Uint32 style = sf::Style::Default;
+
+    if (input_mode) { // fullscreen mode 1080p
+        width = 1920;
+        height = 1080;
+        style = sf::Style::Fullscreen;
+    }
+    else { // windowed mode 720p
+        width = 1280;
+        height = 720;
+        style = sf::Style::Titlebar | sf::Style::Close;
+    }
+
+    sf::RenderWindow window(sf::VideoMode(width, height), "RPG Game", style, settings); // set screen resolution
 
     Player player;
     Skeleton skeleton;
     Stats stats;
-    Bullet bullet;
 
     player.Initialize();
     skeleton.Initialize();
