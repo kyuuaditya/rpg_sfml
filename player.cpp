@@ -59,22 +59,26 @@ void Player::Update(float deltaTime, Skeleton& skeleton, sf::Vector2f& mousePosi
         bullets[i].Update(deltaTime);
 
         // check bullet collision with skeleton
-        if (Math::DidRectCollide(bullets[i].GetGlobalBounds(), skeleton.sprite.getGlobalBounds())) {
-            bullets.erase(bullets.begin() + i);
-            skeleton.health -= 5;
-            skeleton.stats.setString("Health: " + std::to_string(skeleton.health));
-        };
+        if (skeleton.health > 0) { // check if skeleton is alive
+            if (Math::DidRectCollide(bullets[i].GetGlobalBounds(), skeleton.sprite.getGlobalBounds())) {
+                bullets.erase(bullets.begin() + i);
+                skeleton.health -= 5;
+                skeleton.stats.setString("Health: " + std::to_string(skeleton.health));
+            };
+        }
     }
 
     // check player collision with skeleton
-    if (Math::DidRectCollide(sprite.getGlobalBounds(), skeleton.sprite.getGlobalBounds())) { // change colors on collision
-        boundingRectangle.setOutlineColor(sf::Color::Cyan);
-        skeleton.boundingRectangle.setOutlineColor(sf::Color::Red);
+    if (skeleton.health > 0) { // check if skeleton is alive
+        if (Math::DidRectCollide(sprite.getGlobalBounds(), skeleton.sprite.getGlobalBounds())) { // change colors on collision
+            boundingRectangle.setOutlineColor(sf::Color::Cyan);
+            skeleton.boundingRectangle.setOutlineColor(sf::Color::Red);
+        }
+        else {
+            boundingRectangle.setOutlineColor(sf::Color::Red);
+            skeleton.boundingRectangle.setOutlineColor(sf::Color::Cyan);
+        };
     }
-    else {
-        boundingRectangle.setOutlineColor(sf::Color::Red);
-        skeleton.boundingRectangle.setOutlineColor(sf::Color::Cyan);
-    };
 }
 
 void Player::Draw(sf::RenderWindow& window) {

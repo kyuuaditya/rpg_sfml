@@ -45,7 +45,7 @@ void Skeleton::Load() { // load skeleton texture
 }
 
 void Skeleton::Update(float deltaTime) {
-    if (health >= 0) { // check if skeleton is alive
+    if (health > 0) { // check if skeleton is alive
         for (const auto& [key, movement] : movementMap) { // update skeleton position and sprite
             if (sf::Keyboard::isKeyPressed(key)) {
                 sf::Vector2f position = sprite.getPosition();
@@ -61,7 +61,7 @@ void Skeleton::Update(float deltaTime) {
 }
 
 void Skeleton::Draw(sf::RenderWindow& window) {
-    if (health >= 0) { // check if skeleton is alive
+    if (health > 0) { // check if skeleton is alive
         window.draw(sprite);
         window.draw(boundingRectangle);
         window.draw(stats);
