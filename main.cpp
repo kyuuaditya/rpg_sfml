@@ -89,17 +89,18 @@ int main() {
         if (isOnMainMenu) {
             playButton.setPosition(sf::Vector2f(window.getSize().x / 2 - playButtonSize.x / 2, window.getSize().y / 3 - playButtonSize.y / 2));
             playButtonText.setPosition(playButton.getPosition().x + playButtonSize.x / 2 - playButtonText.getLocalBounds().width / 2, playButton.getPosition().y + playButtonSize.y / 2 - playButtonText.getLocalBounds().height);
+            stats.Update();
             //-------------------------------- DRAW --------------------------------
             window.clear(sf::Color::Black);
             window.draw(playButton);
             window.draw(playButtonText);
+            stats.Draw(window);
             window.display();
             //-------------------------------- DRAW --------------------------------
         }
         // -------------------------------- MAIN MENU --------------------------------
         // -------------------------------- GAME --------------------------------
         if (!isOnMainMenu) {
-
             stats.Update();
             skeleton.Update(stats.deltaTime);
             player.Update(stats.deltaTime, skeleton, mousePosition);
