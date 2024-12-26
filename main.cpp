@@ -8,29 +8,11 @@
 
 int main() {
     //-------------------------------- INITIALIZE --------------------------------
+    bool isFullscreen = false;
     sf::ContextSettings settings;
-    settings.antialiasingLevel = 8; // set antialiasing level
+    settings.antialiasingLevel = 8;
 
-    std::cout << "0: Windowed" << std::endl << "1: Fullscreen" << std::endl;
-    int input_mode = 0;// default windowed mode
-    std::cin >> input_mode;
-
-    int width = 1280; // default windowed mode 720p
-    int height = 720;
-    sf::Uint32 style = sf::Style::Default;
-
-    if (input_mode) { // fullscreen mode 1080p
-        width = 1920;
-        height = 1080;
-        style = sf::Style::Fullscreen;
-    }
-    else { // windowed mode 720p
-        width = 1280;
-        height = 720;
-        style = sf::Style::Titlebar | sf::Style::Close;
-    }
-
-    sf::RenderWindow window(sf::VideoMode(width, height), "RPG Game", style, settings); // set screen resolution
+    sf::RenderWindow window(sf::VideoMode(1280, 720), "Main menu", sf::Style::Default, settings);
 
     Player player;
     Skeleton skeleton;
@@ -55,6 +37,16 @@ int main() {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F) {
+                isFullscreen = !isFullscreen;
+                window.close();
+                window.create(
+                    isFullscreen ? sf::VideoMode(1920, 1080) : sf::VideoMode(1280, 720),
+                    "Main menu",
+                    isFullscreen ? sf::Style::Fullscreen : sf::Style::Default,
+                    settings
+                );
+            }
         }
 
         sf::Vector2f mousePosition = sf::Vector2f(sf::Mouse::getPosition(window));
