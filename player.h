@@ -17,7 +17,7 @@ private:
     sf::Vector2i size;
 
     float playerSpeed = 2.0f;
-    float maxFireRate = 250.0f;
+    float maxFireRate = 100.0f;
     float fireRateTimer = 0;
     sf::RectangleShape boundingRectangle;
     std::vector<Bullet> bullets;

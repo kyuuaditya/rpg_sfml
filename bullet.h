@@ -3,7 +3,7 @@
 
 class Bullet {
 public:
-    float speed = 1.0f; // bullet speed
+    float speed = 2.0f; // bullet speed
     sf::Vector2f direction = sf::Vector2f(0, 0);
 
 private:
