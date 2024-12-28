@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Skeleton.h"
 #include "Stats.h"
+#include "menuCharacter.h"
 
 // function to check if the mouse is over the RectangleShape button
 bool isMouseOverButton(const sf::RectangleShape& button, sf::Vector2f& mousePos) {
@@ -14,6 +15,7 @@ bool isMouseOverButton(const sf::RectangleShape& button, sf::Vector2f& mousePos)
 int main() {
     //-------------------------------- INITIALIZE --------------------------------
     sf::Vector2f playButtonSize(150, 60);
+    sf::Vector2f exitButtonSize(150, 60);
 
     bool isOnMainMenu = true;
 
@@ -22,11 +24,14 @@ int main() {
     settings.antialiasingLevel = 8;
 
     sf::RenderWindow window(sf::VideoMode(1280, 720), "Main menu", sf::Style::Default, settings);
+    window.setFramerateLimit(144);
 
+    Character character;
     Player player;
     Skeleton skeleton;
     Stats stats;
 
+    character.Initialize();
     player.Initialize();
     skeleton.Initialize();
     stats.Initialize();
@@ -42,9 +47,22 @@ int main() {
     playButtonText.setCharacterSize(36);
     playButtonText.setFillColor(sf::Color::Black);
     playButtonText.setString(playButtonTextString);
+
+    sf::RectangleShape exitButton(sf::Vector2f(exitButtonSize.x, exitButtonSize.y)); // play button
+    exitButton.setFillColor(sf::Color::Cyan);
+    exitButton.setOutlineColor(sf::Color::White); // Set outline color to red
+    exitButton.setOutlineThickness(3.0f);
+
+    sf::Text exitButtonText;
+    std::string exitButtonTextString = "EXIT";
+    exitButtonText.setFont(stats.font);
+    exitButtonText.setCharacterSize(36);
+    exitButtonText.setFillColor(sf::Color::Black);
+    exitButtonText.setString(exitButtonTextString);
     //-------------------------------- INITIALIZE --------------------------------
 
     //-------------------------------- LOAD --------------------------------
+    character.Load();
     player.Load();
     skeleton.Load();
     stats.Load();
@@ -68,6 +86,7 @@ int main() {
                         isFullscreen ? sf::Style::Fullscreen : sf::Style::Default,
                         settings
                     );
+                    window.setFramerateLimit(144);
                 }
                 if (event.key.code == sf::Keyboard::Enter) { // to select the play button
                     isOnMainMenu = false;
@@ -81,6 +100,9 @@ int main() {
                 if (isMouseOverButton(playButton, mousePosition)) {
                     isOnMainMenu = false;
                 }
+                if (isMouseOverButton(exitButton, mousePosition)) {
+                    window.close();
+                }
             }
         }
         //-------------------------------- EVENTS --------------------------------
@@ -89,11 +111,17 @@ int main() {
         if (isOnMainMenu) {
             playButton.setPosition(sf::Vector2f(window.getSize().x / 2 - playButtonSize.x / 2, window.getSize().y / 3 - playButtonSize.y / 2));
             playButtonText.setPosition(playButton.getPosition().x + playButtonSize.x / 2 - playButtonText.getLocalBounds().width / 2, playButton.getPosition().y + playButtonSize.y / 2 - playButtonText.getLocalBounds().height);
+            exitButton.setPosition(sf::Vector2f(window.getSize().x / 2 - exitButtonSize.x / 2, window.getSize().y / 3 * 2 - exitButtonSize.y / 2));
+            exitButtonText.setPosition(exitButton.getPosition().x + exitButtonSize.x / 2 - exitButtonText.getLocalBounds().width / 2, exitButton.getPosition().y + exitButtonSize.y / 2 - exitButtonText.getLocalBounds().height);
             stats.Update();
+            character.Update(window);
             //-------------------------------- DRAW --------------------------------
             window.clear(sf::Color::Black);
             window.draw(playButton);
             window.draw(playButtonText);
+            window.draw(exitButton);
+            window.draw(exitButtonText);
+            character.Draw(window);
             stats.Draw(window);
             window.display();
             //-------------------------------- DRAW --------------------------------

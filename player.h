@@ -12,8 +12,8 @@ private:
     };
     std::map<sf::Keyboard::Key, Movement> movementMap;
 
-    float width = 64; // width of the sprite 
-    float height = 64; // height of the sprite
+    int width = 64; // width of the sprite 
+    int height = 64; // height of the sprite
     sf::Vector2i size;
 
     float playerSpeed = 2.0f;

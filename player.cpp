@@ -10,7 +10,7 @@ void Player::Initialize() {
         {sf::Keyboard::D, {sf::Vector2f(1, 0),3}} // right
     };
 
-    size = sf::Vector2i(64, 64); // size fo the skeleton sprite
+    size = sf::Vector2i(width, height); // size fo the skeleton sprite
     sprite.scale(sf::Vector2f(3, 3)); // scale of the skeleton sprite
 
     // bounding rectangle properties
