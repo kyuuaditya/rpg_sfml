@@ -32,8 +32,17 @@ void Player::Load() { // load player texture
     }
 }
 
-void Player::Update(float deltaTime, Skeleton& skeleton, sf::Vector2f& mousePosition) {
+void Player::Update(float deltaTime, Skeleton& skeleton, sf::Vector2f& mousePosition, sf::RenderWindow& window) {
     // update player position and sprite
+    // for (const auto& [key, movement] : movementMap) {
+    //     if (sf::Keyboard::isKeyPressed(key)) {
+    //         sf::Vector2f position = sprite.getPosition();
+
+    //         yIndex = movement.yIndex;
+    //         sprite.setPosition(position + movement.vector * playerSpeed * deltaTime);
+    //         sprite.setTextureRect(sf::IntRect(xIndex * size.x, yIndex * size.y, size.x, size.y));
+    //     }
+    // }
     for (const auto& [key, movement] : movementMap) {
         if (sf::Keyboard::isKeyPressed(key)) {
             sf::Vector2f position = sprite.getPosition();
@@ -41,6 +50,21 @@ void Player::Update(float deltaTime, Skeleton& skeleton, sf::Vector2f& mousePosi
             yIndex = movement.yIndex;
             sprite.setPosition(position + movement.vector * playerSpeed * deltaTime);
             sprite.setTextureRect(sf::IntRect(xIndex * size.x, yIndex * size.y, size.x, size.y));
+
+            // Boundary check
+            sf::FloatRect bounds = sprite.getGlobalBounds();
+            if (bounds.left < 0) {
+                sprite.setPosition(0, sprite.getPosition().y);
+            }
+            if (bounds.top < 0) {
+                sprite.setPosition(sprite.getPosition().x, 0);
+            }
+            if (bounds.left + bounds.width > window.getSize().x) {
+                sprite.setPosition(window.getSize().x - bounds.width, sprite.getPosition().y);
+            }
+            if (bounds.top + bounds.height > window.getSize().y) {
+                sprite.setPosition(sprite.getPosition().x, window.getSize().y - bounds.height);
+            }
         }
     }
 

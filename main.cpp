@@ -130,8 +130,8 @@ int main() {
         // -------------------------------- GAME --------------------------------
         if (!isOnMainMenu) {
             stats.Update();
-            skeleton.Update(stats.deltaTime);
-            player.Update(stats.deltaTime, skeleton, mousePosition);
+            skeleton.Update(stats.deltaTime, window);
+            player.Update(stats.deltaTime, skeleton, mousePosition, window);
 
             //-------------------------------- DRAW --------------------------------
             window.clear(sf::Color::Black);

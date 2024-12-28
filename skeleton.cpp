@@ -44,7 +44,7 @@ void Skeleton::Load() { // load skeleton texture
     stats.setPosition(sprite.getPosition() - sf::Vector2f(0, 40));
 }
 
-void Skeleton::Update(float deltaTime) {
+void Skeleton::Update(float deltaTime, sf::RenderWindow& window) {
     if (health > 0) { // check if skeleton is alive
         for (const auto& [key, movement] : movementMap) { // update skeleton position and sprite
             if (sf::Keyboard::isKeyPressed(key)) {
@@ -54,9 +54,24 @@ void Skeleton::Update(float deltaTime) {
                 sprite.setPosition(position + movement.vector * skeletonSpeed * deltaTime);
                 sprite.setTextureRect(sf::IntRect(xIndex * size.x, yIndex * size.y, size.x, size.y));
                 stats.setPosition(sprite.getPosition() - sf::Vector2f(0, 40)); // update stats position with skeleton position
+                // Boundary check
+                sf::FloatRect bounds = sprite.getGlobalBounds();
+                if (bounds.left < 0) {
+                    sprite.setPosition(0, sprite.getPosition().y);
+                }
+                if (bounds.top < 0) {
+                    sprite.setPosition(sprite.getPosition().x, 0);
+                }
+                if (bounds.left + bounds.width > window.getSize().x) {
+                    sprite.setPosition(window.getSize().x - bounds.width, sprite.getPosition().y);
+                }
+                if (bounds.top + bounds.height > window.getSize().y) {
+                    sprite.setPosition(sprite.getPosition().x, window.getSize().y - bounds.height);
+                }
             }
         }
         boundingRectangle.setPosition(sprite.getPosition()); // copy skeleton position to the bounding rectangle
+
     }
 }
 

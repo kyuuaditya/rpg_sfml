@@ -31,6 +31,6 @@ public:
 public:
     void Initialize();
     void Load();
-    void Update(float deltaTime, Skeleton& skeleton, sf::Vector2f& mousePosition);
+    void Update(float deltaTime, Skeleton& skeleton, sf::Vector2f& mousePosition, sf::RenderWindow& window);
     void Draw(sf::RenderWindow& window);
 };
