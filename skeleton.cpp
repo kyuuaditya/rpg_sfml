@@ -42,6 +42,7 @@ void Skeleton::Load() { // load skeleton texture
     // set stats properties
     stats.setString("Health: " + std::to_string(health));
     stats.setPosition(sprite.getPosition() - sf::Vector2f(0, 40));
+    boundingRectangle.setPosition(sprite.getPosition());
 }
 
 void Skeleton::Update(float deltaTime, sf::RenderWindow& window) {
@@ -53,24 +54,24 @@ void Skeleton::Update(float deltaTime, sf::RenderWindow& window) {
                 yIndex = movement.yIndex;
                 sprite.setPosition(position + movement.vector * skeletonSpeed * deltaTime);
                 sprite.setTextureRect(sf::IntRect(xIndex * size.x, yIndex * size.y, size.x, size.y));
-                stats.setPosition(sprite.getPosition() - sf::Vector2f(0, 40)); // update stats position with skeleton position
                 // Boundary check
                 sf::FloatRect bounds = sprite.getGlobalBounds();
-                if (bounds.left < 0) {
-                    sprite.setPosition(0, sprite.getPosition().y);
+                if (bounds.left < 10) {
+                    sprite.setPosition(10, sprite.getPosition().y);
                 }
-                if (bounds.top < 0) {
-                    sprite.setPosition(sprite.getPosition().x, 0);
+                if (bounds.top < 10) {
+                    sprite.setPosition(sprite.getPosition().x, 10);
                 }
-                if (bounds.left + bounds.width > window.getSize().x) {
-                    sprite.setPosition(window.getSize().x - bounds.width, sprite.getPosition().y);
+                if (bounds.left + bounds.width > window.getSize().x - 10) {
+                    sprite.setPosition(window.getSize().x - bounds.width - 10, sprite.getPosition().y);
                 }
-                if (bounds.top + bounds.height > window.getSize().y) {
-                    sprite.setPosition(sprite.getPosition().x, window.getSize().y - bounds.height);
+                if (bounds.top + bounds.height > window.getSize().y - 10) {
+                    sprite.setPosition(sprite.getPosition().x, window.getSize().y - bounds.height - 10);
                 }
+                stats.setPosition(sprite.getPosition() - sf::Vector2f(0, 40)); // update stats position with skeleton position
+                boundingRectangle.setPosition(sprite.getPosition()); // copy skeleton position to the bounding rectangle
             }
         }
-        boundingRectangle.setPosition(sprite.getPosition()); // copy skeleton position to the bounding rectangle
 
     }
 }
