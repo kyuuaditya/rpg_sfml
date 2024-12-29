@@ -53,17 +53,17 @@ void Player::Update(float deltaTime, Skeleton& skeleton, sf::Vector2f& mousePosi
 
             // Boundary check
             sf::FloatRect bounds = sprite.getGlobalBounds();
-            if (bounds.left < 0) {
-                sprite.setPosition(0, sprite.getPosition().y);
+            if (bounds.left < 10) {
+                sprite.setPosition(10, sprite.getPosition().y);
             }
-            if (bounds.top < 0) {
-                sprite.setPosition(sprite.getPosition().x, 0);
+            if (bounds.top < 10) {
+                sprite.setPosition(sprite.getPosition().x, 10);
             }
-            if (bounds.left + bounds.width > window.getSize().x) {
-                sprite.setPosition(window.getSize().x - bounds.width, sprite.getPosition().y);
+            if (bounds.left + bounds.width > window.getSize().x - 10) {
+                sprite.setPosition(window.getSize().x - bounds.width - 10, sprite.getPosition().y);
             }
-            if (bounds.top + bounds.height > window.getSize().y) {
-                sprite.setPosition(sprite.getPosition().x, window.getSize().y - bounds.height);
+            if (bounds.top + bounds.height > window.getSize().y - 10) {
+                sprite.setPosition(sprite.getPosition().x, window.getSize().y - bounds.height - 10);
             }
         }
     }
