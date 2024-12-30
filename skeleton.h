@@ -11,12 +11,12 @@ private:
     };
     std::map<sf::Keyboard::Key, Movement> movementMap;
 
-    float skeletonSpeed = 3.0f;
+    float skeletonSpeed = 1.0f;
     float width = 64;
     float height = 64;
-    sf::Vector2i size;
 
 public:
+    sf::Vector2i size = sf::Vector2i(64, 64);
     int xIndex = 0;
     int yIndex = 0;
     int health = 100;

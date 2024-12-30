@@ -16,8 +16,8 @@ private:
     int height = 64; // height of the sprite
     sf::Vector2i size;
 
-    float playerSpeed = 2.0f;
-    float maxFireRate = 100.0f;
+    float playerSpeed = 1.0f;
+    float maxFireRate = 150.0f;
     float fireRateTimer = 0;
     sf::RectangleShape boundingRectangle;
     std::vector<Bullet> bullets;

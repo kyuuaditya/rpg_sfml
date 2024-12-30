@@ -25,6 +25,7 @@ int main() {
 
     sf::RenderWindow window(sf::VideoMode(1280, 720), "Main menu", sf::Style::Default, settings);
     window.setFramerateLimit(144);
+    // window.setVerticalSyncEnabled(true);
 
     Character character;
     Player player;
@@ -59,6 +60,9 @@ int main() {
     exitButtonText.setCharacterSize(36);
     exitButtonText.setFillColor(sf::Color::Black);
     exitButtonText.setString(exitButtonTextString);
+
+    sf::Texture backgroundTexture;
+    sf::Sprite backgroundSprite;
     //-------------------------------- INITIALIZE --------------------------------
 
     //-------------------------------- LOAD --------------------------------
@@ -66,6 +70,17 @@ int main() {
     player.Load();
     skeleton.Load();
     stats.Load();
+
+    // if (texture.loadFromFile("assets/player/texture/spriteSheet.png")) {
+    if (backgroundTexture.loadFromFile("assets/background/mainBackground.png")) {
+        backgroundSprite.setTexture(backgroundTexture);
+        backgroundSprite.setPosition(sf::Vector2f(0, 0));
+        backgroundSprite.setTextureRect(sf::IntRect(0, 0, 1920, 1080));
+        std::cout << "background texture loaded!" << std::endl;
+    }
+    else {
+        std::cout << "background texture failed to loaded!" << std::endl;
+    }
 
     //-------------------------------- LOAD --------------------------------
 
@@ -99,6 +114,12 @@ int main() {
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) { // mouse events (left)
                 if (isMouseOverButton(playButton, mousePosition)) {
                     isOnMainMenu = false;
+                    if (skeleton.health <= 0) {
+                        skeleton.health = 100;
+                        skeleton.sprite.setPosition(sf::Vector2f(300, 200));
+                        skeleton.stats.setString("Health: " + std::to_string(skeleton.health));
+                        skeleton.sprite.setTextureRect(sf::IntRect(skeleton.xIndex * skeleton.size.x, skeleton.yIndex * skeleton.size.y, skeleton.size.x, skeleton.size.y));
+                    }
                 }
                 if (isMouseOverButton(exitButton, mousePosition)) {
                     window.close();
@@ -135,6 +156,8 @@ int main() {
 
             //-------------------------------- DRAW --------------------------------
             window.clear(sf::Color::Black);
+
+            window.draw(backgroundSprite);
 
             skeleton.Draw(window);
             player.Draw(window);

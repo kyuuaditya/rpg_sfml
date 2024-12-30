@@ -9,7 +9,7 @@ void Skeleton::Initialize() {
         {sf::Keyboard::L, {sf::Vector2f(1, 0),3}} // right
     };
 
-    size = sf::Vector2i(64, 64); // size of skeleton sprite
+    // size of skeleton sprite
     sprite.scale(sf::Vector2f(3, 3)); // scale 
 
     // bounding rectangle properties
