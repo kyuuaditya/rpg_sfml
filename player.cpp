@@ -33,16 +33,6 @@ void Player::Load() { // load player texture
 }
 
 void Player::Update(float deltaTime, Skeleton& skeleton, sf::Vector2f& mousePosition, sf::RenderWindow& window) {
-    // update player position and sprite
-    // for (const auto& [key, movement] : movementMap) {
-    //     if (sf::Keyboard::isKeyPressed(key)) {
-    //         sf::Vector2f position = sprite.getPosition();
-
-    //         yIndex = movement.yIndex;
-    //         sprite.setPosition(position + movement.vector * playerSpeed * deltaTime);
-    //         sprite.setTextureRect(sf::IntRect(xIndex * size.x, yIndex * size.y, size.x, size.y));
-    //     }
-    // }
     for (const auto& [key, movement] : movementMap) {
         if (sf::Keyboard::isKeyPressed(key)) {
             sf::Vector2f position = sprite.getPosition();

@@ -8,7 +8,6 @@ public:
 
 private:
     sf::RectangleShape rectangleShape;
-    // sf::Vector2f direction;
 
 public:
     void Initialize(const sf::Vector2f& position, sf::Vector2f& direction, float speed);

@@ -24,8 +24,8 @@ int main() {
     settings.antialiasingLevel = 8;
 
     sf::RenderWindow window(sf::VideoMode(1280, 720), "Main menu", sf::Style::Default, settings);
-    window.setFramerateLimit(144);
-    // window.setVerticalSyncEnabled(true);
+    window.setFramerateLimit(144); // set frame rate limit
+    window.setVerticalSyncEnabled(true); // enable vertical sync
 
     Character character;
     Player player;
@@ -71,8 +71,7 @@ int main() {
     skeleton.Load();
     stats.Load();
 
-    // if (texture.loadFromFile("assets/player/texture/spriteSheet.png")) {
-    if (backgroundTexture.loadFromFile("assets/background/mainBackground.png")) {
+    if (backgroundTexture.loadFromFile("assets/background/mainBackground.png")) { // load background texture
         backgroundSprite.setTexture(backgroundTexture);
         backgroundSprite.setPosition(sf::Vector2f(0, 0));
         backgroundSprite.setTextureRect(sf::IntRect(0, 0, 1920, 1080));
@@ -102,6 +101,7 @@ int main() {
                         settings
                     );
                     window.setFramerateLimit(144);
+                    window.setVerticalSyncEnabled(true);
                 }
                 if (event.key.code == sf::Keyboard::Enter) { // to select the play button
                     isOnMainMenu = false;
@@ -116,7 +116,6 @@ int main() {
                     isOnMainMenu = false;
                     if (skeleton.health <= 0) {
                         skeleton.health = 100;
-                        // skeleton.sprite.setPosition(sf::Vector2f(300, 200));
                         skeleton.stats.setString("Health: " + std::to_string(skeleton.health));
                         skeleton.sprite.setTextureRect(sf::IntRect(skeleton.xIndex * skeleton.size.x, skeleton.yIndex * skeleton.size.y, skeleton.size.x, skeleton.size.y));
                     }
@@ -157,7 +156,7 @@ int main() {
             //-------------------------------- DRAW --------------------------------
             window.clear(sf::Color::Black);
 
-            window.draw(backgroundSprite);
+            window.draw(backgroundSprite); // draw background
 
             skeleton.Draw(window);
             player.Draw(window);
