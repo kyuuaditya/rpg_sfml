@@ -116,7 +116,7 @@ int main() {
                     isOnMainMenu = false;
                     if (skeleton.health <= 0) {
                         skeleton.health = 100;
-                        skeleton.sprite.setPosition(sf::Vector2f(300, 200));
+                        // skeleton.sprite.setPosition(sf::Vector2f(300, 200));
                         skeleton.stats.setString("Health: " + std::to_string(skeleton.health));
                         skeleton.sprite.setTextureRect(sf::IntRect(skeleton.xIndex * skeleton.size.x, skeleton.yIndex * skeleton.size.y, skeleton.size.x, skeleton.size.y));
                     }
