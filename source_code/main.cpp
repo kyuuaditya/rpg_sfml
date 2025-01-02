@@ -2,6 +2,8 @@
 // mingw32-make
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <math.h>
+#include <vector>
 #include "Player.h"
 #include "Skeleton.h"
 #include "Stats.h"
